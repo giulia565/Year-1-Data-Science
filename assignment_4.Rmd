@@ -60,6 +60,7 @@ datasummary((mean + median + sd + min + max) ~ Factor(treat)*(growth + rgdp60), 
 
 **Designated place**: type one or two sentences describing this table of a fellow student below. For example, comment on the mean and median growth of both groups. Then stage, commit and push it to their github repository. 
 
+TEST TEST
 
 ### Part 3: Make a table summarizing reressions using modelsummary and kable
 
