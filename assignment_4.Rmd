@@ -4,10 +4,10 @@ title: |
   | Introduction to Applied Data Science
   | 2022-2023
 author: |
-  | Your Name: Giulia Gay
-  | your email: g.gay@student.uu.nl
-  | http://www.github.com/yourgithubname
-date: April 2023
+  | Julia Gilda Carbone
+  | j.g.carbone@students.uu.nl
+  | https://github.com/jgcarbone
+date: June 2023
 urlcolor: purple
 linkcolor: purple
 output: 
@@ -32,12 +32,12 @@ This interpretation will not be graded, but a Github shows the contributors to a
 
 **Question 1.1**: Fill in the __github username__ of the class mate to whose repository you have contributed. 
 
-[Fill in here]
+[giulia565]
 
 ### Part 2: Analyzing various linear models
 
 In this part, we will summarize a dataset and create a couple of customized tables. Then, we will compare a couple of linear models to each other, and see which linear model fits the data the best, and yields the most interesting results.
-
++
 We will use a dataset called `GrowthSW` from the `AER` package. This is a dataset containing 65 observations on 6 variables and investigates the determinants of economic growth. First, we will try to summarize the data using the `modelsummary` package. 
 
 ```{r, warning=FALSE, message=FALSE}
@@ -52,8 +52,9 @@ One of the variables in the dataset is `revolutions`, the number of revolutions,
 ```{r}
 library(modelsummary); library(tidyverse)
 
-GrowthSW$treat <-ifelse (GrowthSW$revolutions ==0, 0, 1)
-datasummary(( mean + median + sd + min + max) ~ factor(treat)*(growth + rgdp60), data = GrowthSW)
+GrowthSW$treat <- if_else(GrowthSW$revolutions > 0, "More than 0 Revolutions", "0 Revolutions")
+
+datasummary((mean + median + sd + min + max) ~ Factor(treat)*(growth + rgdp60), data = GrowthSW)
 
 ```
 
@@ -67,13 +68,18 @@ In question 2, we have seen that growth rates differ markedly between countries 
 **Question 3.1**: Try to make this more precise this by performing a t-test on the variable growth according to the group variable you have created in the previous question. 
 
 ```{r}
-library(ggplot2)
-t.test(growth ~ treat, data = GrowthSW, var.equal = FALSE, paired = FALSE)
 
+group_0 <- subset(GrowthSW, treat == "0 Revolutions")
+group_1 <- subset(GrowthSW, treat == "More than 0 Revolutions")
+
+ttest_result <- t.test(group_0$growth, group_1$growth)
+
+print(ttest_result)
 ```
 
 **Question 3.2**: What is the $p$-value of the test, and what does that mean? Write down your answer below.
 
+The p value of the test is 0.06871. This p-value suggests 
 
 We can also control for other factors by including them in a linear model, for example:
 
@@ -89,14 +95,17 @@ We now want to estimate a stepwise model. Stepwise means that we first estimate 
 **Question 3.4**: Write four models, titled `model1`, `model2`, `model3`, `model4` (using the `lm` function) to memory. Hint: you can also use the `update` function to add variables to an already existing specification.
 
 ```{r}
-
+model1 <- lm(growth ~ treat, data = GrowthSW)
+model2 <- lm(growth ~ treat + rgdp60, data = GrowthSW)
+model3 <- lm(growth ~ treat + rgdp60 + tradeshare, data = GrowthSW)
+model4 <- update(model3, . ~ . + education)
 ```
 
 Now, we put the models in a list, and see what `modelsummary` gives us:
 
 ```{r}
 list(model1, model2, model3, model4) |>
-  modelsummary(stars=T,
+  modelsummary(stars=T, 
 # edit this to remove the statistics other than R-squared
 # and N
 ) 
