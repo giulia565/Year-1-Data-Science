@@ -32,7 +32,7 @@ This interpretation will not be graded, but a Github shows the contributors to a
 
 **Question 1.1**: Fill in the __github username__ of the class mate to whose repository you have contributed. 
 
-jgcarbone
+[jgcarbone]
 
 ### Part 2: Analyzing various linear models
 
@@ -59,6 +59,7 @@ datasummary(( mean + median + sd + min + max) ~ factor(treat)*(growth + rgdp60),
 
 **Designated place**: type one or two sentences describing this table of a fellow student below. For example, comment on the mean and median growth of both groups. Then stage, commit and push it to their github repository. 
 
+Giulia has a data table that shows the mean, median, sd, min, and max for the variables growth and rgdp60 for countries with revolutions and with no revolutions.
 
 ### Part 3: Make a table summarizing reressions using modelsummary and kable
 
